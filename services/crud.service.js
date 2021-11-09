@@ -1,11 +1,15 @@
+const CrudError = require('../errors/crud.errors.js');
 const ItemModel = require('../models/item.model.js');
 
 class CrudService {
     async postItem({name, count = 1, price}) {
         try {
+            if (!name || !price) {
+                throw CrudError.badRequest('Required fields are not filled in.');
+            }
             const checkItem = await ItemModel.findOne({name});
             if (checkItem) {
-                throw new Error('Item already exists.')
+                throw CrudError.alreadyExists('Item already exists.');
             }
             const newItem = await ItemModel.create({name, count, price: `${price}$`});
             return newItem;
@@ -24,7 +28,7 @@ class CrudService {
     async updateItem(item) {
         try {
             if (!item._id) {
-                throw new Error('Error. Id is required.')
+                throw CrudError.badRequest('ID is requied.');
             }
             const updatedPost = await ItemModel.findByIdAndUpdate(item._id, item, {new: true});
             return updatedPost;
@@ -35,7 +39,7 @@ class CrudService {
     async deleteItem({_id}) {
         try {
             if (!_id) {
-                throw new Error('Error. Id is required.')
+                throw CrudError.badRequest('ID is requied.');
             }
             const deletedItem = await ItemModel.findByIdAndDelete(_id);
             return deletedItem;
