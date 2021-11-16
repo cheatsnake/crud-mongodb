@@ -1,5 +1,5 @@
 # :zap: CRUD MongoDB app
-Simple app with CRUD opertions on a MongoDB. Build with Express.js using mongoose.
+Simple app with MongoDB CRUD operations. Build with Express.js using mongoose.
 
 :rocket: Start server 
 ```sh
